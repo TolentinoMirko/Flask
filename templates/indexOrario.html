@@ -4,7 +4,7 @@
     
     <title>Document</title>
 </head>
-<body>
+<body bgcolor="{{color}}", onload="sendTimeToServer()">
 
 
     <script>
@@ -15,7 +15,7 @@
     document.getElementById("time").innerHTML = time;
 }
 </script>
-<button onclick="sendTimeToServer()">update time</button>
+
 <div id="time">Time: </div>
 
     

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Document</title>
+</head>
+
+<body bgcolor="#2ed573">
+    <div class="img-container">
+        <div class="row">
+            <img src="/static/meteo.jpg" alt="meteo" width="100%">
+        </div>
+        <div class="row">
+            <img src="/static/book.jpeg" alt="book" width="100%">
+        </div>
+        <div class="row">
+            <img src="/static/calendari.jpg" alt="calendar" width="100%">
+        </div>
+    </div>
+
+
+
+</body>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .row {
+        float: left;
+        width: 33.33%;
+        padding: 10px;
+    }
+
+    /* Clearfix (clear floats) */
+    .img-container::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+</style>
+
+</html>
