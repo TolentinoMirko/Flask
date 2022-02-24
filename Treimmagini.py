@@ -6,15 +6,19 @@ app = Flask(__name__)
 def TreImmagi():
     return render_template ('IndexTreImag.html')
 
-@app.route('/', methods=['GET'])
+@app.route('/meteo', methods=['GET'])
 def Casuale():
     rand = random.randint(0,8)
     if rand < 2:
-        meteo = "pioggia"
+        mete = "pioggia"
+        immag = "static/pioggia.jpg"
     elif rand > 3 & rand < 5:
-        meteo = "nuvoloso"
+        mete = "nuvoloso"
+        immag = "static/nuvoloso.jpg"
     else:
-        meteo="sole"
+        mete="soleggiato"
+        immag = "static/soleggiato.jpg"
+    return render_template("meteo.html",meteo=mete,immagine=immag)
 
 
 
