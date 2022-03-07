@@ -15,13 +15,16 @@ def Casuale():
     if rand < 2:
         mete = "pioggia"
         immag = "static/pioggia.jpg"
+        colo = "#ccffff"
     elif rand > 3 & rand < 5:
         mete = "nuvoloso"
         immag = "static/nuvoloso.jpg"
+        colo = "gray"
     else:
         mete = "soleggiato"
         immag = "static/soleggiato.jpg"
-    return render_template("meteo.html", meteo=mete, immagine=immag)
+        colo = "#ffff99"
+    return render_template("meteo.html", meteo=mete, immagine=immag ,colore=colo)
 
 
 @app.route('/frasi', methods=['GET'])

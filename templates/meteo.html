@@ -2,15 +2,21 @@
 <html lang="en">
 
 <head>
-    
-    <title>Document</title>
+    <title>meteo</title>
+    <style>
+        img {
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        </style>
 </head>
 
-<body>
+<body bgcolor="{{colore}}">
     <h1 style="text-align:center">Meteo di oggi: {{meteo}}</h1>
 
     
-        <img align="middle" src="{{immagine}}" alt=>
+        <img src="{{immagine}}" alt={{meteo}}>
     
 </body>
 
