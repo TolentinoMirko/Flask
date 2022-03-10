@@ -3,7 +3,7 @@ CapoluoghiRegioni = {'Abruzzo': 'LAquila', 'Basilicata': 'Potenza', 'Calabria': 
 
 regione = input()
 
-for reg in CapoluoghiRegioni:
-       if reg == regione:
-           namcapoluogo = 
+for key, value in CapoluoghiRegioni.items():
+       if regione == key:
+           namcapoluogo = value
 print(namcapoluogo)

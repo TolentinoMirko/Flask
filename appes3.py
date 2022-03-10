@@ -17,18 +17,46 @@ CapoluoghiRegioni = {'Abruzzo': 'LAquila', 'Basilicata': 'Potenza', 'Calabria': 
 
 @app.route('/', methods=['GET'])
 def home():
+    return render_template('appes3/homees3.html')
 
-    return
+@app.route("/data", methods=["GET"])
+def data():
+    scelta = request.args["Opzioni"]
+    if scelta == "CapoL":
+        return render_template("appes3/trcapoluogo.html")
+    else:
+        return render_template("appes3/trregione.html")
 
 
 @app.route('/trcapoluogo', methods=['GET'])
 def capoluogo():
     regione = request.args['Regione']
 
-    for reg in CapoluoghiRegioni:
-         if reg == regione:
-           namcapoluogo = utente.values
-    return render_template('appes3/trcapoluogo.html')
+    for key ,value in CapoluoghiRegioni.items():
+         if regione == key:
+           namcapoluogo = value
+    return render_template('appes3/risposta1.html',risp = namcapoluogo)
+
+
+@app.route('/trregione', methods=['GET'])
+def regione():
+    capoluogo = request.args['Capoluogo']
+
+    for key ,value in CapoluoghiRegioni.items():
+         if capoluogo == value:
+           namregione = key
+    return render_template('appes3/risposta1.html',risp = namregione )
+
+
+@app.route('/trregione', methods=['GET'])
+def regione():
+    capoluogo = request.args['Capoluogo']
+
+    for key ,value in CapoluoghiRegioni.items():
+         if capoluogo == value:
+           regione = key
+    return render_template('appes3/risposta1.html')
+
 
 
 if __name__ == '__main__':

@@ -13,7 +13,7 @@ lista = []
 
 @app.route('/', methods=['GET'])
 def home():
-    return render_template("appes2/registeres2.html"                                                                                )
+    return render_template("appes2/registeres2.html")                                                                              
 
 
 @app.route('/data', methods=['GET'])
