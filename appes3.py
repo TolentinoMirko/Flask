@@ -35,7 +35,7 @@ def capoluogo():
     for key ,value in CapoluoghiRegioni.items():
          if regione == key:
            namcapoluogo = value
-    return render_template('appes3/risposta1.html',risp = namcapoluogo)
+    return render_template('appes3/risposta1.html',risp2 = namcapoluogo)
 
 
 @app.route('/trregione', methods=['GET'])
@@ -46,17 +46,6 @@ def regione():
          if capoluogo == value:
            namregione = key
     return render_template('appes3/risposta1.html',risp = namregione )
-
-
-@app.route('/trregione', methods=['GET'])
-def regione():
-    capoluogo = request.args['Capoluogo']
-
-    for key ,value in CapoluoghiRegioni.items():
-         if capoluogo == value:
-           regione = key
-    return render_template('appes3/risposta1.html')
-
 
 
 if __name__ == '__main__':
