@@ -10,7 +10,7 @@ from flask import Flask, render_template, send_file, make_response, url_for, Res
 app = Flask(__name__)
 
 quartieri = gpd.read_file("/workspace/Flask/static/files/ds964_nil_wm.zip")
-
+fontanelle = gpd.read_file("/workspace/Flask/static/files/Fontanelle.zip")
 
 @app.route('/', methods=['GET'])
 def home():
@@ -54,7 +54,7 @@ def districs():
     
     QuartOttenuto = quartieri[quartieri['NIL']==inserisce]
     
-    return render_template("appPrepVer/PrepVerPlotRice.html",nome=inserisce,nomiquar=inserisce)
+    return render_template("appPrepVer/PrepVerPlotRice.html",nomiquar=inserisce)
    
 
 @app.route('/scelta', methods=['GET'])
@@ -62,6 +62,14 @@ def choose():
     inserisce = quartieri['NIL'].to_list()
     
     return render_template('/appPrepVer/PrepVerScelta.html',nomiquar=inserisce)
+
+@app.route('/fontanelle', methods=['GET'])
+def fonta():       
+        global fontanelle
+        tuttiquar = quartieri['NIL'].to_list()
+        fontane = quartieri.sjoin(fontanelle,quartieri,op="within")
+        return render_template('/appPrepVer/FontanelleScelta.html',tuttiquartieri=tuttiquar,fontanelle=fontane)
+
 
 
 
