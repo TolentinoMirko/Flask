@@ -21,11 +21,25 @@ def home():
 @app.route('/numero', methods=['GET'])
 def numero():
 #numero stazioni per ogni munnicipio
+    global risultato
     risultato = stazioni.groupby("MUNICIPIO")["OPERATORE"].count().reset_index()
 
     return render_template("verificaa/link1.html",risultato = risultato.to_html())
 
+@app.route('/grafico', methods=['GET'])
+def grafico():
+    #costruzione del grafico
+    fig, ax = plt.subplots(figsize = (6,4))
 
+    x = risultato.MUNICIPIO
+    y = risultato.OPERATORE
+
+    ax.bar(x, y, color = "#304C89")
+    #visualizzazione del grafico
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
+    
 
 
 
