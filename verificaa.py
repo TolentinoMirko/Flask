@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, Response
+from flask import Flask, render_template, request, Response, redirect,url_for
 app = Flask(__name__)
 
 
@@ -16,7 +16,7 @@ stazioni = pd.read_csv("/workspace/Flask/static/files/coordfix_ripetitori_radiof
 
 @app.route('/', methods=['GET'])
 def home():
-    return render_template("verificaa/home.html")
+    return render_template("verificaa/home1.html")
 
 @app.route('/numero', methods=['GET'])
 def numero():
@@ -42,6 +42,15 @@ def grafico():
     
 
 
+@app.route('/selezione', methods=['GET'])
+def selezione():
+    scelta = request.args["scelta"]
+    if scelta == "es1":
+        return redirect(url_for("numero"))
+    elif scelta == "es2":
+        return redirect(url_for("input"))
+    else:
+        return redirect(url_for("dropdown"))
 
 
 
