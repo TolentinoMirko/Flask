@@ -12,11 +12,28 @@ import io
 import pandas as pd
 
 stazioni = pd.read_csv("/workspace/Flask/static/files/coordfix_ripetitori_radiofonici_milano_160120_loc_final.csv",sep= ";")
-
+stazionigeo =gpd.read_file("/workspace/Flask/static/files/ds710_coordfix_ripetitori_radiofonici_milano_160120_loc_final.geojson",sep= ";")
+quartieri = gpd.read_file("/workspace/Flask/static/files/ds964_nil_wm.zip")
+print('quartiere')
+print('stazioniquartiere')
+print('stazionigeo')
 
 @app.route('/', methods=['GET'])
 def home():
     return render_template("verificaa/home1.html")
+
+
+@app.route('/selezione', methods=['GET'])
+def selezione():
+    scelta = request.args["scelta"]
+    if scelta == "es1":
+        return redirect(url_for("numero"))
+    elif scelta == "es2":
+        return redirect(url_for("input"))
+    else:
+        return redirect(url_for("dropdown"))
+
+#_____________________________________________________________________________________es_1
 
 @app.route('/numero', methods=['GET'])
 def numero():
@@ -41,17 +58,43 @@ def grafico():
     return Response(output.getvalue(), mimetype='image/png')
     
 
+#_____________________________________________________________________________________es_2
 
-@app.route('/selezione', methods=['GET'])
-def selezione():
-    scelta = request.args["scelta"]
-    if scelta == "es1":
-        return redirect(url_for("numero"))
-    elif scelta == "es2":
-        return redirect(url_for("input"))
-    else:
-        return redirect(url_for("dropdown"))
+@app.route('/input', methods=['GET'])
+def input():
+    return render_template("verificaa/input.html")
 
+@app.route('/ricerca', methods=['GET'])
+def ricerca():
+    global quartiere, stazioniquartiere
+    
+    nomequartiere = request.args["quartiere"]
+    quartiere = quartieri[quartieri['NIL']==nomequartiere]
+    #quartiere = quartieri[quartieri.NIL.str.contains(quartiere)]
+    stazioniquartiere = stazionigeo[stazionigeo.within(quartiere.geometry.squeeze())]
+    return render_template("verificaa/elenco1.html",risultato = stazioniquartiere.to_html())
+
+@app.route('/mappa', methods=['GET'])
+def mappa():
+
+    fig, ax = plt.subplots(figsize=(12, 8))
+
+    stazioniquartiere.to_crs(epsg=3857).plot(ax=ax,color="k")
+    quartiere.to_crs(epsg=3857).plot(ax=ax, alpha=0.5,edgecolor='k')
+    contextily.add_basemap(ax=ax)
+    
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
+ 
+#_____________________________________________________________________________________es 3
+
+@app.route('/dropdown', methods=['GET'])
+def drpdwn():
+    nomistazioni = stazioni.OPERATORE.to_list()
+    #to_list() trasforma in una lista
+    
+    return render_template("Verficaa/dropdown.html",stazioni = nomistazioni)
 
 
 
