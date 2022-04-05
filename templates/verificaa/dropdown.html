@@ -1,7 +1,7 @@
 <form action="/sceltastazione" method="GET">
     <select name="dropdown">
-    {% for i in tuttiquartieri%}
-    <option value="{{i}}" SELECTED>{{i}}</option>
+    {% for stazione in stazioni%}
+    <option value="{{stazione}}" >{{stazione}}</option>
     {%endfor%}
     </select>
     <p><input type="submit" value="Submit" /></p>

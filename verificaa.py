@@ -33,7 +33,7 @@ def selezione():
     else:
         return redirect(url_for("dropdown"))
 
-#_____________________________________________________________________________________es_1
+#_______________________________________________________________________________________________es_1
 
 @app.route('/numero', methods=['GET'])
 def numero():
@@ -58,7 +58,7 @@ def grafico():
     return Response(output.getvalue(), mimetype='image/png')
     
 
-#_____________________________________________________________________________________es_2
+#_______________________________________________________________________________________________es_2
 
 @app.route('/input', methods=['GET'])
 def input():
@@ -87,14 +87,41 @@ def mappa():
     FigureCanvas(fig).print_png(output)
     return Response(output.getvalue(), mimetype='image/png')
  
-#_____________________________________________________________________________________es 3
+#_______________________________________________________________________________________________es 3
 
 @app.route('/dropdown', methods=['GET'])
-def drpdwn():
+def dropdown():
     nomistazioni = stazioni.OPERATORE.to_list()
+    nomistazioni = list(set(nomistazioni))
+    nomistazioni.sort()
+
     #to_list() trasforma in una lista
     
-    return render_template("Verficaa/dropdown.html",stazioni = nomistazioni)
+    return render_template('verificaa/dropdown.html',stazioni = nomistazioni)
+
+
+@app.route('/sceltastazione', methods=['GET'])
+def sceltastazione():
+    global quartiere1, stazioneutente
+    stazione = request.args['dropdown']
+    stazioneutente = stazionigeo[stazionigeo['OPERATORE']==stazione]
+    quartiere1 = quartieri[quartieri.contains(stazioneutente.geometry.squeeze())]
+
+
+    return render_template("verificaa/vistastazione.html",quartiere=quartiere1)
+
+@app.route('/mappaquart', methods=['GET'])
+def mappaquart():
+
+    fig, ax = plt.subplots(figsize=(12, 8))
+
+    stazioneutente.to_crs(epsg=3857).plot(ax=ax,color="k")
+    quartiere1.to_crs(epsg=3857).plot(ax=ax, alpha=0.5,edgecolor='k')
+    contextily.add_basemap(ax=ax)
+    
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
 
 
 
