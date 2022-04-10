@@ -43,9 +43,57 @@ def minemax():
     print(lineeconvalori)
     return render_template("verificac/elenco.html", lineeconval = lineeconvalori.to_html())
 
+#________________________________________________________________________
+
+
+@app.route('/inserisci', methods=['GET'])
+def inserisci():
+    return render_template("verificac/inserisci.html")
+
+@app.route('/lineenelquartiere', methods=['GET'])
+def lineenelquartiere():
+    quartuser = request.args['quartiereinserito']
+    quartiereutente = quartieri[quartieri['NIL']==quartuser] 
+    lineepassanti = lineeurbane[lineeurbane.intersects(quartiereutente.geometry.squeeze())]
+    lineepassanti = lineepassanti.sort_values(by=['nome'])
+
+    return render_template("verificac/lista.html",linee = lineepassanti.to_html())
+
+#_________________________________________________________________________
+
+
+@app.route('/dropdown', methods=['GET'])
+def dropdown():
+    listadropdown = lineeurbane.linea.to_list()
+    listadropdown.sort()
+    print(listadropdown)
+    return render_template("verificac/dropdown.html",lista2 = listadropdown )
 
 
 
+@app.route('/sceltanumerolinea', methods=['GET'])
+def sceltanumerolinea():
+    global numeroutente
+    numerouser = request.args['dropdown']
+    numeroutente = lineeurbane[lineeurbane.linea == numerouser]
+    return render_template("verificac/mappa.html")
+
+
+
+
+@app.route('/mappa', methods=['GET'])
+def mappa():
+
+    fig, ax = plt.subplots(figsize=(12, 8))
+
+    numeroutente.to_crs(epsg=3857).plot(ax=ax,color="red")
+    quartieri.to_crs(epsg=3857).plot(ax=ax, alpha=0.5,edgecolor='k')
+    contextily.add_basemap(ax=ax)
+    
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
+    
 
 
 

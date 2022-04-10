@@ -1,0 +1,8 @@
+<form action="/sceltanumerolinea" method="GET">
+    <select name="dropdown">
+        {% for linea in lista2%}
+        <option value="{{linea}}" >{{linea}}</option>
+        {%endfor%}
+        </select>
+        <p><input type="submit" value="Submit" /></p>
+</form>
