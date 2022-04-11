@@ -27,9 +27,9 @@ def ricerca():
     quartierilista = quartieri.NIL.to_list()
     quartierilista.sort()
 
-    return render_template("verificab/elenco.html",quart = quartierilista)
+    return render_template("verificab/ricerca.html",quart = quartierilista)
 
-@app.route('/elenco', methods=['GET'])
+@app.route('/risultato', methods=['GET'])
 def elenco():
     quartiereutente = request.args["opzioni"]
 
