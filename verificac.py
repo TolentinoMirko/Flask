@@ -14,6 +14,8 @@ import pandas as pd
 quartieri = gpd.read_file("/workspace/Flask/static/files/ds964_nil_wm.zip")
 lineeurbane = gpd.read_file("/workspace/Flask/static/files/percorsi.geojson")
 
+lineeurbane['lung_km'] = lineeurbane['lung_km'].astype(float)#per cambiare tipo la colonna
+lineeurbane['linea'] = lineeurbane['linea'].astype(int)
 
 @app.route('/', methods=['GET'])
 def home():
@@ -36,8 +38,8 @@ def valori():
 
 @app.route('/minemax', methods=['GET'])
 def minemax():
-    valoreminimo = request.args['valmin']
-    valoremassimo = request.args['valmax']
+    valoreminimo = float(request.args['valmin'])
+    valoremassimo = float(request.args['valmax'])
 
     lineeconvalori = lineeurbane[(lineeurbane['lung_km']<valoremassimo) & (lineeurbane['lung_km']>valoreminimo)]
     print(lineeconvalori)
@@ -64,7 +66,7 @@ def lineenelquartiere():
 
 @app.route('/dropdown', methods=['GET'])
 def dropdown():
-    listadropdown = lineeurbane.linea.to_list()
+    listadropdown = list(set(lineeurbane.linea))
     listadropdown.sort()
     print(listadropdown)
     return render_template("verificac/dropdown.html",lista2 = listadropdown )
